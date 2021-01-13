@@ -2,5 +2,14 @@ timezone: Europe/Zurich
 sass:
   style: compressed
 exclude:
+- Gemfile
+- Gemfile.lock
+- LICENSE
+- README.md
 - node_modules
+- package-lock.json
+- package.json
 - third_party
+- ts
+- tsconfig.json
+- webpack.config.js

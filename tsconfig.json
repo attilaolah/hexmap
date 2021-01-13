@@ -1,0 +1,17 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es2020",
+    "sourceMap": true,
+    "outDir": "./js",
+    "types": [
+      "babylonjs"
+    ]
+  },
+  "include": [
+    "ts/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.js"
+  ]
+}
