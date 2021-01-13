@@ -35,4 +35,5 @@
     crossorigin="anonymous">
 </script>
 {%- endfor%}
+<script type="application/json" id="data">{{ page.data | jsonify }}</script>
 <script src="js/{{ page.path | remove: ".md" }}.js"></script>

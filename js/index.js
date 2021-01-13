@@ -25,6 +25,62 @@ window.addEventListener("resize", () => engine.resize());
 
 /***/ }),
 
+/***/ "./ts/lib/mapbox.ts":
+/*!**************************!*\
+  !*** ./ts/lib/mapbox.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* binding */ TileServer
+/* harmony export */ });
+class TileServer {
+    constructor(token) {
+        this.endpoint = "https://api.mapbox.com/styles";
+        this.version = "v1";
+        this.user = "mapbox";
+        this.style = "streets-v11";
+        this.token = token;
+    }
+    getURL(zoom, x, y, hires) {
+        return `${[
+            this.endpoint, this.version, this.user, this.style,
+            "tiles", zoom, x, y,
+        ].join("/")}${hires ? "@2x" : ""}?access_token=${this.token}`;
+    }
+    getTile(zoom, x, y, hires) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.addEventListener("load", () => resolve(img));
+            img.crossOrigin = "anonymous";
+            img.src = this.getURL(zoom, x, y, hires);
+        });
+    }
+}
+
+
+/***/ }),
+
+/***/ "./ts/lib/page_data.ts":
+/*!*****************************!*\
+  !*** ./ts/lib/page_data.ts ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => /* export default binding */ __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+class PageData {
+}
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
+    return JSON.parse(document.getElementById("data").innerText);
+}
+
+
+/***/ }),
+
 /***/ "./ts/lib/scene.ts":
 /*!*************************!*\
   !*** ./ts/lib/scene.ts ***!
@@ -33,20 +89,60 @@ window.addEventListener("resize", () => engine.resize());
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => /* binding */ CreateScene
+/* harmony export */   "default": () => /* binding */ NewScene
 /* harmony export */ });
 /* harmony import */ var babylonjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babylonjs */ "babylonjs");
 /* harmony import */ var babylonjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babylonjs__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _page_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./page_data */ "./ts/lib/page_data.ts");
+/* harmony import */ var _mapbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mapbox */ "./ts/lib/mapbox.ts");
 
-function CreateScene(canvas, engine) {
+
+
+function NewScene(canvas, engine) {
     const scene = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Scene(engine);
-    babylonjs__WEBPACK_IMPORTED_MODULE_0__.MeshBuilder.CreatePolyhedron("oct", {
-        type: 3,
+    const box = babylonjs__WEBPACK_IMPORTED_MODULE_0__.MeshBuilder.CreateBox("box", {
+        size: 4,
+        faceUV: new UVRow(6),
     }, scene);
+    box.material = new EarthCubeMaterial(scene);
     const camera = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
     const light = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.HemisphericLight("light", new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector3(1, 1, 0), scene);
     return scene;
+}
+class UVRow extends Array {
+    constructor(cols) {
+        super(cols);
+        for (let i = 0; i < cols; i++) {
+            this[i] = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector4(i / cols, 0, (i + 1) / cols, 1);
+        }
+    }
+}
+class EarthCubeTexture extends babylonjs__WEBPACK_IMPORTED_MODULE_0__.DynamicTexture {
+    constructor(scene) {
+        const res = 1024;
+        super("EarthCubeTexture", {
+            height: res,
+            width: res * 6,
+        }, scene, false);
+        this.ts = new _mapbox__WEBPACK_IMPORTED_MODULE_2__.default((0,_page_data__WEBPACK_IMPORTED_MODULE_1__.default)().mapbox_api_token);
+        this.ts.getTile(0, 0, 0, true)
+            .then((img) => {
+            this.getContext().drawImage(img, res * 0, 0);
+            this.getContext().drawImage(img, res * 1, 0);
+            this.getContext().drawImage(img, res * 2, 0);
+            this.getContext().drawImage(img, res * 3, 0);
+            this.getContext().drawImage(img, res * 4, 0);
+            this.getContext().drawImage(img, res * 5, 0);
+            this.update(true);
+        });
+    }
+}
+class EarthCubeMaterial extends babylonjs__WEBPACK_IMPORTED_MODULE_0__.StandardMaterial {
+    constructor(scene) {
+        super("EarthCubeMaterial", scene);
+        this.diffuseTexture = new EarthCubeTexture(scene);
+    }
 }
 
 
