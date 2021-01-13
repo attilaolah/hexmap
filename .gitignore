@@ -4,3 +4,4 @@ third_party/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
+.*.sw?
