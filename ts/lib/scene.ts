@@ -1,7 +1,9 @@
-export default function CreateScene(canvas, engine) {
+import * as BABYLON from 'babylonjs';
+
+export default function CreateScene(canvas: HTMLCanvasElement, engine: BABYLON.Engine) {
   const scene = new BABYLON.Scene(engine);  
 
-  const icos = BABYLON.MeshBuilder.CreatePolyhedron("oct", {
+  BABYLON.MeshBuilder.CreatePolyhedron("oct", {
     type: 3,
   }, scene);
 

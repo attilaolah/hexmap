@@ -13,7 +13,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babylonjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babylonjs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _lib_scene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/scene */ "./ts/lib/scene.ts");
 
-// 1
 
 const canvas = document.getElementById("render");
 const engine = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Engine(canvas, true);
@@ -36,14 +35,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => /* binding */ CreateScene
 /* harmony export */ });
+/* harmony import */ var babylonjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babylonjs */ "babylonjs");
+/* harmony import */ var babylonjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babylonjs__WEBPACK_IMPORTED_MODULE_0__);
+
 function CreateScene(canvas, engine) {
-    const scene = new BABYLON.Scene(engine);
-    const icos = BABYLON.MeshBuilder.CreatePolyhedron("oct", {
+    const scene = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Scene(engine);
+    babylonjs__WEBPACK_IMPORTED_MODULE_0__.MeshBuilder.CreatePolyhedron("oct", {
         type: 3,
     }, scene);
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0), scene);
+    const camera = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector3(0, 0, 0), scene);
     camera.attachControl(canvas, true);
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
+    const light = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.HemisphericLight("light", new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector3(1, 1, 0), scene);
     return scene;
 }
 

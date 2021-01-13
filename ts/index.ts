@@ -1,5 +1,4 @@
 import * as BABYLON from 'babylonjs';
-// 1
 
 import NewScene from "./lib/scene";
 
