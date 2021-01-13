@@ -110,12 +110,10 @@ function NewScene(canvas, engine) {
     const light = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.HemisphericLight("light", new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector3(1, 1, 0), scene);
     return scene;
 }
-class UVRow extends Array {
-    constructor(cols) {
-        super(cols);
-        for (let i = 0; i < cols; i++) {
-            this[i] = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector4(i / cols, 0, (i + 1) / cols, 1);
-        }
+class EarthCubeMaterial extends babylonjs__WEBPACK_IMPORTED_MODULE_0__.StandardMaterial {
+    constructor(scene) {
+        super("EarthCubeMaterial", scene);
+        this.diffuseTexture = new EarthCubeTexture(scene);
     }
 }
 class EarthCubeTexture extends babylonjs__WEBPACK_IMPORTED_MODULE_0__.DynamicTexture {
@@ -138,10 +136,12 @@ class EarthCubeTexture extends babylonjs__WEBPACK_IMPORTED_MODULE_0__.DynamicTex
         });
     }
 }
-class EarthCubeMaterial extends babylonjs__WEBPACK_IMPORTED_MODULE_0__.StandardMaterial {
-    constructor(scene) {
-        super("EarthCubeMaterial", scene);
-        this.diffuseTexture = new EarthCubeTexture(scene);
+class UVRow extends Array {
+    constructor(cols) {
+        super(cols);
+        for (let i = 0; i < cols; i++) {
+            this[i] = new babylonjs__WEBPACK_IMPORTED_MODULE_0__.Vector4(i / cols, 0, (i + 1) / cols, 1);
+        }
     }
 }
 

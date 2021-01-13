@@ -20,12 +20,11 @@ export default function NewScene(canvas: HTMLCanvasElement, engine: BABYLON.Engi
   return scene;
 }
 
-class UVRow extends Array<BABYLON.Vector4> {
-  constructor(cols: number) {
-    super(cols);
-    for (let i = 0; i < cols; i++) {
-      this[i] = new BABYLON.Vector4(i/cols, 0, (i+1)/cols, 1);
-    }
+class EarthCubeMaterial extends BABYLON.StandardMaterial {
+  constructor(scene: BABYLON.Scene) {
+    super("EarthCubeMaterial", scene);
+
+    this.diffuseTexture = new EarthCubeTexture(scene);
   }
 }
 
@@ -53,10 +52,11 @@ class EarthCubeTexture extends BABYLON.DynamicTexture {
   }
 }
 
-class EarthCubeMaterial extends BABYLON.StandardMaterial {
-  constructor(scene: BABYLON.Scene) {
-    super("EarthCubeMaterial", scene);
-
-    this.diffuseTexture = new EarthCubeTexture(scene);
+class UVRow extends Array<BABYLON.Vector4> {
+  constructor(cols: number) {
+    super(cols);
+    for (let i = 0; i < cols; i++) {
+      this[i] = new BABYLON.Vector4(i/cols, 0, (i+1)/cols, 1);
+    }
   }
 }
