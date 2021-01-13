@@ -4,13 +4,15 @@
 <title>Hex Map</title>
 {%- for css in page.css %}
 <link rel="stylesheet"
-    href="{{ css.href }}"
+    href="{{ css.url }}"
     {%- if css.sha512 %}
     integrity="sha512-{{ css.sha512 }}"
     {%- endif %}
     crossorigin="anonymous">
 {%- endfor %}
 <link rel="stylesheet" href="css/{{ page.path | remove: ".md" }}.css">
+
+<canvas id="render"></canvas>
 
 <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -24,3 +26,13 @@
     <div class="navbar-end"></div>
   </div>
 </nav>
+
+{%- for js in page.js %}
+<script src="{{ js.url }}"
+    {%- if js.sha512 %}
+    integrity="sha512-{{ js.sha512 }}"
+    {%- endif %}
+    crossorigin="anonymous">
+</script>
+{%- endfor%}
+<script src="js/{{ page.path | remove: ".md" }}.js"></script>
