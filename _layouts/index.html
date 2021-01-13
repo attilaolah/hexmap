@@ -4,9 +4,11 @@
 <title>Hex Map</title>
 {%- for css in page.css %}
 <link rel="stylesheet"
-    href="{{ css.url }}"
     {%- if css.sha512 %}
-    integrity="sha512-{{ css.sha512 }}"
+    href="{{ css.url | remove: ".css" }}{% if jekyll.environment == "production" %}.min{% endif %}.css"
+    integrity="sha512-{% if jekyll.environment == "production" %}{{ css.sha512_min }}{% else %}{{ css.sha512 }}{% endif %}"
+    {%- else  %}
+    href="{{ css.url }}"
     {%- endif %}
     crossorigin="anonymous">
 {%- endfor %}
@@ -28,10 +30,8 @@
 </nav>
 
 {%- for js in page.js %}
-<script src="{{ js.url }}"
-    {%- if js.sha512 %}
-    integrity="sha512-{{ js.sha512 }}"
-    {%- endif %}
+<script src="{{ js.url | remove: ".js" }}{% if jekyll.environment == "production" %}.min{% endif %}.js"
+    integrity="sha512-{% if jekyll.environment == "production" %}{{ js.sha512_min }}{% else %}{{ js.sha512 }}{% endif %}"
     crossorigin="anonymous">
 </script>
 {%- endfor%}
