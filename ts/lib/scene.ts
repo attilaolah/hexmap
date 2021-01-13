@@ -3,21 +3,24 @@ import * as BABYLON from "babylonjs";
 import PageData from "./page_data";
 import TileServer from "./mapbox";
 
-export default function NewScene(canvas: HTMLCanvasElement, engine: BABYLON.Engine) {
-  const scene = new BABYLON.Scene(engine);
+export default class EarthCubeScene extends BABYLON.Scene {
+  private camera: BABYLON.ArcRotateCamera;
+  private light: BABYLON.HemisphericLight;
 
-  const box = BABYLON.MeshBuilder.CreateBox("box", {
-    size: 4,
-    faceUV: new UVRow(6),
-  }, scene);
-  box.material = new EarthCubeMaterial(scene);
+  constructor(canvas: HTMLCanvasElement, engine: BABYLON.Engine) {
+    super(engine);
 
-  const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0), scene);
-  camera.attachControl(canvas, true);
+    const box = BABYLON.MeshBuilder.CreateBox("Box", {
+      size: 4,
+      faceUV: new UVRow(6),
+    }, this);
+    box.material = new EarthCubeMaterial(this);
 
-  const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
+    this.camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2, Math.PI / 2.5, 15, new BABYLON.Vector3(0, 0, 0), this);
+    this.camera.attachControl(canvas, true);
 
-  return scene;
+    this.light = new BABYLON.HemisphericLight("Sun", new BABYLON.Vector3(1, 1, 0), this);
+  }
 }
 
 class EarthCubeMaterial extends BABYLON.StandardMaterial {
