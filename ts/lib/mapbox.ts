@@ -1,3 +1,5 @@
+import InitLoam from "./loam";
+
 export default class TileServer {
   private endpoint = "https://api.mapbox.com/styles";
   private version = "v1";
@@ -7,6 +9,10 @@ export default class TileServer {
 
   constructor(token: string) {
     this.token = token;
+    InitLoam()
+      .then(loam => {
+        console.log("LOAM initialised.");
+      });
   }
 
   public getURL(zoom: number, x: number, y: number, hires: boolean): string {

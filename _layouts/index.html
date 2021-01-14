@@ -14,6 +14,10 @@
 {%- endfor %}
 <link rel="stylesheet" href="css/{{ page.path | remove: ".md" }}.css">
 
+{%- for url in page.prefetch %}
+<link rel="prefetch" href="{{ url }}">
+{%- endfor %}
+
 <canvas id="render"></canvas>
 
 <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
