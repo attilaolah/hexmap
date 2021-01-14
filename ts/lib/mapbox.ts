@@ -9,14 +9,14 @@ export default class TileServer {
     this.token = token;
   }
 
-  public getURL(zoom, x, y: number, hires: boolean): string {
+  public getURL(zoom: number, x: number, y: number, hires: boolean): string {
     return `${[
       this.endpoint, this.version, this.user, this.style,
       "tiles", zoom, x, y,
     ].join("/")}${hires ? "@2x" : ""}?access_token=${this.token}`;
   }
 
-  public getTile(zoom, x, y: number, hires: boolean): Promise<HTMLImageElement> {
+  public getTile(zoom: number, x: number, y: number, hires: boolean): Promise<HTMLImageElement> {
     return new Promise(resolve => {
       const img = new Image();
       img.addEventListener("load", () => resolve(img));
