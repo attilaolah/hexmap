@@ -5,3 +5,4 @@ third_party/
 .jekyll-cache/
 .jekyll-metadata
 .*.sw?
+*.js.map
